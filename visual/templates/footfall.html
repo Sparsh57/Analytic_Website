@@ -1,0 +1,155 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Footfall Heatmap</title>
+<link rel="stylesheet" href="{% static 'styling.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+<script>
+    var footfall_Data = {{ footfall_data|safe }};
+    var footfallData = footfall_Data
+    var datah = {{data | safe }};
+    var data = datah;
+    var genderage = {{gender_age | safe}};
+    var gender_age = genderage;
+    var datesh = {{dates | safe}};
+    var dates = datesh;
+    var hours = {{hours | safe}};
+    var agesh = {{age | safe}};
+    var ages = agesh;
+    console.log(agesh);
+    var hour_age = {{hour_age | safe}};
+    var hourage = hour_age;
+    var hour_gender = {{hour_gender | safe}};
+    var hourgender = hour_gender;
+</script>
+<script src="{% static 'heatmap_footfall.js' %}"></script> 
+</head>
+<body>
+    <div class="dropdown">
+        <label for="dateOptions"></label> <br />
+        <select name="date" id="dateOptions">
+            <option value="">Overall</option>
+        </select>
+    </div>
+    <h1 style="font-size: 40px" align="center"> <strong> <font color="#424442" > Welcome {{ user.username }} </font></strong></h1>
+    <br><br/>
+    <div class="chart-container">
+    <h1 style="font-size: 40px" align="left"> <strong> <font color="#424442" > Footfall </font></strong></h1>
+    <p style="font-size: 20px" align="left"> <font color="#424442" > Aggregate hourly foot traffic data across a week, presenting a detailed chart revealing daily visitor trends for effective store management insights.</font></p>
+    <div id="footfall_heatmap" style="width: 1270px;height:600px;"></div>
+    </div>
+    <br><br/>
+    <div class="chart1-container">
+        <h2 style="font-size: 30px" align="left"> <strong> <font color="#424442" > Gender-Day Chart</font></strong></h2>
+        <p style="font-size: 15px" align="left"> <font color="#424442" > Track store visits: Monitor and analyze gender demographics to understand</font></p>
+        <p style="font-size: 15px" align="left"> <font color="#424442" > customer footfall trends for effective business insights.</font></p>
+        <div id="gender_date" style="width: 600px;height: 500px;"></div>
+    </div>
+    <div class="chart1-container">
+        <h2 style="font-size: 30px" align="left"> <strong> <font color="#424442" > Gender-Age Chart</font></strong></h2>
+        <p style="font-size: 15px" align="left"> <font color="#424442" > Track store visits: Monitor and analyze gender demographics to understand</font></p>
+        <p style="font-size: 15px" align="left"> <font color="#424442" > customer footfall trends for effective business insights.</font></p>
+        <div id="gender_age" style="width: 600px;height: 500px;"></div>
+    </div>
+    <br>
+    <div class="chart-container">
+        <h1 style="font-size: 40px" align="left"> <strong> <font color="#424442" > Daywise Footfall </font></strong></h1>
+        <div id="stack_chart" style="width: 1270px;height:400px;"></div>
+    </div>
+    <div class="chart1-container">
+        <h2 style="font-size: 40px" align="left"> <strong> <font color="#424442" > Hour-Gender Chart</font></strong></h2>
+        <div id="hour_gender" style="width: 600px;height: 500px;"></div>
+    </div>
+    <div class="chart1-container">
+        <h2 style="font-size: 40px" align="left"> <strong> <font color="#424442" > Hour-Age Chart</font></strong></h2>
+        <div id="hour_age" style="width: 600px;height: 500px;"></div>
+    </div>
+    <br>
+    <div class="chart1-container">
+        <h1 style="font-size: 40px" align="left"><strong><font color="#424442">Age Group Distribution</font></strong></h1>
+        <div id="agepie" style="width: 600px;height: 500px;"></div>
+    </div>
+    <div class="chart1-container">
+        <h1 style="font-size: 40px" align="left"><strong><font color="#424442">Forenoon vs Afternoon Footfall</font></strong></h1>
+        <div id="for_aft" style="width: 600px;height: 500px;"></div>
+    </div>
+    <h1 style="font-size: 40px" align="center"> <strong> <font color="#424442" > Some Key Points </font></strong></h1>
+    <div class="key-points">
+        <div class="key-point-card">
+            <h2>Highest Footfall Date</h2>
+            <p id="highestFootfallDate">The date with the highest footfall was on </p>
+        </div>
+        <div class="key-point-card">
+            <h2>Footfall Peak Time</h2>
+            <p id="footfallTime">The time when footfall peaked was at </p>
+        </div>
+        <div class="key-point-card">
+            <h2>Highest Footfall Gender</h2>
+            <p id="highestFootfallGender">The gender contributing most to the highest footfall was </p>
+        </div>
+        <div class="key-point-card">
+            <h2>Most Common Age Group</h2>
+            <p id="mostCommonAgeGroup">The most common age group among footfall visitors was </p>
+        </div>
+        <div class="key-point-card">
+            <h2>Peak Footfall Date and Time</h2>
+            <p id="peakFootfallDateTime">The exact hour and date of the peak footfall occurrence was on </p>
+        </div>
+        <div class="key-point-card">
+            <h2>Lowest Footfall Date</h2>
+            <p id="worstFootfallDate">The date with the lowest footfall was on </p>
+        </div>
+        <div class="key-point-card">
+            <h2>Footfall Low Time</h2>
+            <p id="worstFootfallTime">The time when footfall was at its lowest was at </p>
+        </div>
+        <div class="key-point-card">
+            <h2>Continuous Footfall Date</h2>
+            <p id="continuousFootfallDate">The date with continuous footfall was </p>
+        </div>
+        <div class="key-point-card">
+            <h2>Lowest Occurrence Date</h2>
+            <p id="lowestOccurrenceDate">The date with the lowest occurrence in each hour was </p>
+        </div>
+        <div class="key-point-card">
+            <h2>Best Per Hour Footfall Ratio Date</h2>
+            <p id="bestPerHourFootfallRatioDate">If there was footfall, the date with the best per hour footfall ratio was </p>
+        </div>
+        <div class="key-point-card">
+            <h2>Worst Per Hour Footfall Ratio Date</h2>
+            <p id="worstPerHourFootfallRatioDate">If there was footfall, the date with the worst per hour footfall ratio was </p>
+        </div>
+        <div class="key-point-card">
+            <h2>Most Balanced Gender Distribution Date</h2>
+            <p id="mostBalancedGenderDistributionDate">The date with the most balanced gender distribution ratio was on </p>
+        </div>
+        <div class="key-point-card">
+            <h2>Least Balanced Gender Distribution Date</h2>
+            <p id="leastBalancedGenderDistributionDate">The date with the least balanced gender distribution ratio was on </p>
+        </div>
+        <div class="key-point-card">
+            <h2>Most Balanced Gender Distribution Age Group</h2>
+            <p id="mostBalancedGenderDistributionAgeGroup">The age group with the most balanced gender distribution ratio was </p>
+        </div>
+        <div class="key-point-card">
+            <h2>Least Balanced Gender Distribution Age Group</h2>
+            <p id="leastBalancedGenderDistributionAgeGroup">The age group with the least balanced gender distribution ratio was: </p>
+        </div>
+        <div class="key-point-card">
+            <h2>Highest Variance Footfall Date</h2>
+            <p id="highestVarianceFootfallDate">The date with the highest standard deviation in footfall was on </p>
+        </div>
+        <div class="key-point-card">
+            <h2>Lowest Variance Footfall Date</h2>
+            <p id="lowestVarianceFootfallDate">The date with the lowest standard deviation in footfall was on </p>
+        </div>
+    </div>
+    <div class="center">
+        <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+    </div>
+</body>
+</html>
